@@ -165,7 +165,7 @@ class ManagerTask:
             crash_log_qemu_id = info.get("qemu_id", None)
             if crash_log_qemu_id and node.get_exit_reason() == "crash":
                 time.sleep(2)
-                src = f"/tmp/kAFL_crash_call_stack_{crash_log_qemu_id}.log"
+                src = f"/tmp/kAFL_crash_call_stack_{crash_log_qemu_id}"
                 dst = self.config.workdir + "/corpus/crash/payload_%05d_crash_log"%(node.get_id())
                 if os.path.exists(src):
                     shutil.move(src, dst)
