@@ -402,6 +402,10 @@ class WorkerTask:
                 self.q.store_crashlogs(exec_res.exit_reason, exec_res.hash())
 
             if crash or stable:
+                if self.q.process is not None:
+                    info['qemu_id'] = str(self.q.process.pid)
+                else:
+                    raise Exception("self.q.process.pid is None!")
                 self.__send_to_manager(data, exec_res, info)
 
         # restart Qemu on crash

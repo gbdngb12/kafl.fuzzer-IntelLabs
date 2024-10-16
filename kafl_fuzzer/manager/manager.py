@@ -161,6 +161,16 @@ class ManagerTask:
             node.set_new_bits(new_bits, write=False)
             self.queue.insert_input(node, bitmap)
             self.store_trace(node.get_id(), tmp_trace_file)
+            
+            crash_log_qemu_id = info.get("qemu_id", None)
+            if crash_log_qemu_id and node.get_exit_reason() == "crash":
+                time.sleep(2)
+                src = f"/tmp/kAFL_crash_call_stack_{crash_log_qemu_id}.log"
+                dst = self.config.workdir + "/corpus/crash/payload_%05d_crash_log"%(node.get_id())
+                if os.path.exists(src):
+                    shutil.move(src, dst)
+                else:
+                    pass
             return
 
         if tmp_trace_file and os.path.exists(tmp_trace_file):
